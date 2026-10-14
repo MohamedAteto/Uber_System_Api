@@ -75,8 +75,8 @@ namespace Uber_System_Api.Controllers
             return Ok(DTO);
         }
 
-        [HttpPatch("Accept_Ride/{id}")]
-        public async Task<IActionResult> AcceptTask([FromRoute] int rideid)
+        [HttpPatch("Accept_Ride")]
+        public async Task<IActionResult> AcceptTask( int rideid)
         {
             var item = await _unit.Rides.GetById(rideid);
             if (item == null)
@@ -97,8 +97,8 @@ namespace Uber_System_Api.Controllers
 
         }
 
-        [HttpPatch("Complete_Ride/{id}")]
-        public async Task<IActionResult> CompleteRide([FromRoute] int rideid)
+        [HttpPatch("Complete_Ride/")]
+        public async Task<IActionResult> CompleteRide( int rideid)
         {
             var item = await _unit.Rides.GetById(rideid);
             if (item == null)
@@ -128,6 +128,35 @@ namespace Uber_System_Api.Controllers
             await _unit.Rides.Delete(id);
             await _unit.SaveAsync();
             return Ok("Ride deleted successfully.");
+        }
+
+        [HttpGet("GetRides With the same Pip/Location")]
+        public async Task<IActionResult> GetRidesWithPip(string Location)
+        {
+            if (Location is null)
+                return BadRequest();
+
+            var items = await _unit.Rides.GetRidesByPickUpLocation(Location);
+
+            if (items is null)
+                return BadRequest("There is not rides for this ");
+
+            var DTO = _mapper.Map<List<RideDTO>>(items);
+
+            return Ok(DTO);
+        }
+
+        [HttpGet("Git with filters")]
+        public async Task<IActionResult> Filteration(int? MaxFare,int? MinFare , string? Status)
+        {
+            var items = await _unit.Rides.GetRidesWithFilteration(MinFare, MaxFare, Status);
+
+            if (items is null)
+                return BadRequest("There isn't Rides with this Filteration !!!");
+
+            var DTO = _mapper.Map<List<RideDTO>>(items);
+
+            return Ok(DTO);
         }
     }
 }

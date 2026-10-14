@@ -7,6 +7,7 @@ namespace Uber_System_Api.Reposatories.Interface
         Task<ICollection<Ride>> GetRidesWithPagignation(int pageNumber, int pageSize);
         Task AcceptRide(int rideid);
         Task MarkComplete(int rideid);
-
+        Task<ICollection<Ride>> GetRidesByPickUpLocation(string Location);
+        Task<ICollection<Ride>> GetRidesWithFilteration(int? MinFare, int? MaxFare, string? Status);
     }
 }
