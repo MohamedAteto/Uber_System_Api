@@ -1,0 +1,9 @@
+﻿namespace Uber_System_Api.DTOs.VehicleDTOs
+{
+    public class UpdateVehicleDTO
+    {
+        public string VehiclePlateNumber { get; set; }
+        public string VehicleColor { get; set; }
+        public int DriverId { get; set; }
+    }
+}
